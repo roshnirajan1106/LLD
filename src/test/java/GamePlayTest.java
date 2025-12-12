@@ -2,10 +2,7 @@ import org.example.api.AIPlayer;
 import org.example.api.Game;
 import org.example.api.RuleEngine;
 import org.example.boards.TicTacBoard;
-import org.example.game.Board;
-import org.example.game.Cell;
-import org.example.game.Move;
-import org.example.game.Player;
+import org.example.game.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +35,10 @@ public class GamePlayTest {
         int next = 0;
         int row,col;
 
-        while (!ruleEngine.getState(board).isOver()) {
+        Player computer = new Player("O"),
+                human = new Player("X");
+        while (!ruleEngine.getState(board).isOver() ) {
 
-            Player computer = new Player("O"),
-                    human = new Player("X");
             row = moves[next][0];
             col = moves[next][1];
             next++;
@@ -58,14 +55,13 @@ public class GamePlayTest {
             System.out.println("the result is " +winner );
 
         }
-
     }
 
     @Test
     public void checkForColWin(){
         Board board = gameEngine.start();
         // make moves in a loop
-        int[][] moves = new int[][]{{1,0},{1,1},{1,2}};
+        int[][] moves = new int[][]{{1,0},{1,1},{2,2}};
         playGame(board, moves);
         Assert.assertTrue(ruleEngine.getState(board).isOver());
         Assert.assertEquals(ruleEngine.getState(board).getWinner(),"X");
