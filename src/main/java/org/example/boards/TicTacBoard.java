@@ -13,10 +13,10 @@ public class TicTacBoard implements Board {
     }
 
     private void setCell(Cell cell, String symbol) {
-        if(board[cell.getRow()][cell.getCol()] != null){
+        if(board[cell.getRow()][cell.getCol()] == null){
             board[cell.getRow()][cell.getCol()] = symbol;
         }else{
-            throw new  IllegalStateException();
+            throw new IllegalStateException();
         }
 
     }

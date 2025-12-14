@@ -7,6 +7,11 @@ public class Cell {
         this.row = x;
         this.col = y;
     }
+
+    public static Cell getCell(int row, int col) {
+        return new Cell(row,col);
+    }
+
     public int getRow(){
         return row;
     }

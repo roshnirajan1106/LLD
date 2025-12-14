@@ -100,7 +100,7 @@ public class RuleEngine {
             Boolean isWinner = true;
             String firstChar = next.apply(i,0);
             for(int j = 0 ;j < 3 ;j++){
-                if(!firstChar.equals(next.apply(i,j))){
+                if(firstChar == null || !firstChar.equals(next.apply(i,j))){
                     isWinner = false;
                     break;
                 }
