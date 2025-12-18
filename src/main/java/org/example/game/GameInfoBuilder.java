@@ -6,6 +6,7 @@ public class GameInfoBuilder {
     private Boolean isForkPresent;
     private Boolean isOver;
     private Integer numberOfMoves = 0;
+    private Cell forkCell;
 
     public GameInfoBuilder player(Player player) {
         this.player = player;
@@ -36,7 +37,11 @@ public class GameInfoBuilder {
         if (isForkPresent == null) {
             throw new IllegalArgumentException("is fork feild is necessary");
         }
-        return new GameInfo(player, winner, isForkPresent, isOver, numberOfMoves);
+        return new GameInfo(player, winner, isForkPresent, isOver, numberOfMoves,forkCell);
     }
 
+    public GameInfoBuilder forkCell(Cell forkCell) {
+        this.forkCell = forkCell;
+        return this;
+    }
 }

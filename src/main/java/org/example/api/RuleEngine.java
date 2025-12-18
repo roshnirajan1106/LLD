@@ -27,6 +27,7 @@ public class RuleEngine {
                     Board b = board.copy();
                     Player player = new Player(players[index]);
                     b.move(new Move(new Cell(i, j), player));
+                    Cell forkCell = new Cell(i,j);
                     boolean canStillWin = false;
                     for (int k = 0; k < 3; k++) {
                         for (int l = 0; l < 3; l++) {
@@ -43,11 +44,11 @@ public class RuleEngine {
                     }
                     if (canStillWin) {
                         return new GameInfoBuilder()
-                                .isForkPresent(true)
-                                .numberOfMoves(0)
-                                .winner("-")
-                                .player(player)
                                 .isOver(true)
+                                .winner(gameState.getWinner())
+                                .isForkPresent(true)
+                                .forkCell(forkCell)
+                                .player(player.flip())
                                 .build();
                     }
                 }
