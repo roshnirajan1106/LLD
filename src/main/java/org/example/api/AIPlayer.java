@@ -77,5 +77,4 @@ public class AIPlayer {
         return cnt < threshold;
     }
 
-
 }

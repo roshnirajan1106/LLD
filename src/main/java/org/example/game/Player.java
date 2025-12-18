@@ -2,6 +2,8 @@ package org.example.game;
 
 public class Player {
     String symbol;
+    private User userId;
+    private int timeUsedInMillis;
     public Player(String symbol){
         this.symbol = symbol;
     }
@@ -15,5 +17,11 @@ public class Player {
         }else{
             return new Player("X");
         }
+    }
+    public void setTimeTaken(int timeTaken){
+        timeUsedInMillis += timeTaken;
+    }
+    public int getTimeUsedInMillis(){
+        return timeUsedInMillis;
     }
 }
