@@ -2,6 +2,10 @@ package org.example.api;
 
 import org.example.boards.TicTacBoard;
 import org.example.game.*;
+import org.example.stateManager.DefensivePlacement;
+import org.example.stateManager.Placement;
+
+import java.util.Optional;
 
 //suggest moves
 public class AIPlayer {
@@ -23,22 +27,13 @@ public class AIPlayer {
     }
 
     private Cell getOptimalMove(TicTacBoard board1,Player player) {
-        Cell offenseCell = getCell(player,board1);
-        if(offenseCell != null) return offenseCell;
-        Cell defenseCell = getCell(player.flip(),board1);
-        if(defenseCell != null) return defenseCell;
-        GameInfo gameInfo = ruleEngine.getInfo(board1);
-        if(gameInfo.getIsForkPresent()){
-            return gameInfo.getForkCell();
-        }
-        if(board1.getSymbol(1,1) != null) return new Cell(1,1);
-        final int[][] corners = {
-                {0,0} , {0,1} , {2, 0}, {2,2}
-        };
-        for(int i = 0; i <4;i++){
-            if(board1.getSymbol(corners[i][0],corners[i][1] )!= null){
-                return new Cell(corners[i][0], corners[i][1]);
+        Placement placement = DefensivePlacement.get();
+        while (placement != null){
+            Optional<Cell> place = placement.place(board1,player);
+            if(place.isPresent()){
+                return place.get();
             }
+            placement = placement.next();
         }
         return null;
     }

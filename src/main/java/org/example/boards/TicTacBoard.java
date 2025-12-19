@@ -2,28 +2,26 @@ package org.example.boards;
 
 import org.example.api.Rule;
 import org.example.api.RuleSet;
-import org.example.game.Board;
-import org.example.game.Cell;
-import org.example.game.GameState;
-import org.example.game.Move;
+import org.example.game.*;
+
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 
-public class TicTacBoard implements Board {
+public class TicTacBoard implements CellBoard {
     String[][] board = new String[3][3];
-    private static Function<TicTacBoard, GameState> rowWin = (board -> checkRowCol((i, j)-> board.getSymbol(i,j)));
-    private static Function<TicTacBoard,GameState> colWin = (board -> checkRowCol((i,j)->board.getSymbol(j,i)));
-    private static Function<TicTacBoard,GameState> diagWin = (board -> getGameStateForDiag((i)-> board.getSymbol(i,i)));
-    private static Function<TicTacBoard,GameState> revDiagWin = (board -> getGameStateForDiag((i)-> board.getSymbol(2-i,i)));
+    private static Function<CellBoard, GameState> rowWin = (board -> checkRowCol((i, j)-> board.getSymbol(i,j)));
+    private static Function<CellBoard,GameState> colWin = (board -> checkRowCol((i,j)->board.getSymbol(j,i)));
+    private static Function<CellBoard,GameState> diagWin = (board -> getGameStateForDiag((i)-> board.getSymbol(i,i)));
+    private static Function<CellBoard,GameState> revDiagWin = (board -> getGameStateForDiag((i)-> board.getSymbol(2-i,i)));
 
     public static RuleSet getRules() {
         RuleSet ruleSet= new RuleSet();
-        ruleSet.add(new Rule<TicTacBoard>(ticTacBoard -> rowWin.apply(ticTacBoard)));
-        ruleSet.add(new Rule<TicTacBoard>(ticTacBoard -> colWin.apply(ticTacBoard)));
-        ruleSet.add(new Rule<TicTacBoard>(ticTacBoard -> diagWin.apply(ticTacBoard)));
-        ruleSet.add(new Rule<TicTacBoard>(ticTacBoard -> revDiagWin.apply(ticTacBoard)));
-        ruleSet.add(new Rule<TicTacBoard>(ticTacBoard -> {
+        ruleSet.add(new Rule(ticTacBoard -> rowWin.apply(ticTacBoard)));
+        ruleSet.add(new Rule(ticTacBoard -> colWin.apply(ticTacBoard)));
+        ruleSet.add(new Rule(ticTacBoard -> diagWin.apply(ticTacBoard)));
+        ruleSet.add(new Rule(ticTacBoard -> revDiagWin.apply(ticTacBoard)));
+        ruleSet.add(new Rule(ticTacBoard -> {
             int filledCells = 0;
             for(int i = 0; i< 3;i++){
                 for(int j = 0;j<3;j++){
@@ -66,9 +64,6 @@ public class TicTacBoard implements Board {
         }
         return result;
     }
-    public String getSymbol(int i, int j){
-        return board[i][j];
-    }
 
     private void setCell(Cell cell, String symbol) {
         if(board[cell.getRow()][cell.getCol()] == null){
@@ -102,4 +97,8 @@ public class TicTacBoard implements Board {
         return ticTacBoard;
     }
 
+    @Override
+    public String getSymbol(int i, int j){
+        return board[i][j];
+    }
 }

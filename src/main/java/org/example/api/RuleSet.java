@@ -1,20 +1,21 @@
 package org.example.api;
 
 import org.example.game.Board;
+import org.example.game.CellBoard;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class RuleSet<T extends Board> implements Iterable<Rule<T>>{
-    private final List<Rule<T>> ruleList = new ArrayList<>();
+public class RuleSet implements Iterable<Rule>{
+    private final List<Rule> ruleList = new ArrayList<>();
 
-    public void add(Rule<T> boardRule) {
+    public void add(Rule boardRule) {
         ruleList.add(boardRule);
     }
 
     @Override
-    public Iterator<Rule<T>> iterator() {
+    public Iterator<Rule> iterator() {
         return ruleList.iterator();
     }
 }
