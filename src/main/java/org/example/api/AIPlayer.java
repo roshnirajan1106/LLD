@@ -50,8 +50,7 @@ public class AIPlayer {
             for(int j = 0; j <3 ; j++){
                 if(board1.getSymbol(i,j) == null){
                     Move move = new Move(new Cell(i,j), player);
-                    TicTacBoard boardCopy = board1.copy();
-                    boardCopy.move(move);
+                    TicTacBoard boardCopy =  board1.move(move);
                     if(ruleEngine.getState(boardCopy).isOver()){
                         return new Cell(i, j);
                     }

@@ -4,6 +4,8 @@ import org.example.api.Rule;
 import org.example.api.RuleSet;
 import org.example.game.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -14,7 +16,14 @@ public class TicTacBoard implements CellBoard {
     private static Function<CellBoard,GameState> colWin = (board -> checkRowCol((i,j)->board.getSymbol(j,i)));
     private static Function<CellBoard,GameState> diagWin = (board -> getGameStateForDiag((i)-> board.getSymbol(i,i)));
     private static Function<CellBoard,GameState> revDiagWin = (board -> getGameStateForDiag((i)-> board.getSymbol(2-i,i)));
+    History history = new History();
 
+    public TicTacBoard(Representation representation){
+
+    }
+    public TicTacBoard(){
+
+    }
     public static RuleSet getRules() {
         RuleSet ruleSet= new RuleSet();
         ruleSet.add(new Rule(ticTacBoard -> rowWin.apply(ticTacBoard)));
@@ -75,9 +84,13 @@ public class TicTacBoard implements CellBoard {
     }
 
     @Override
-    public void move(Move move) {
-        setCell(move.getCell(), move.getPlayer().getSymbol());
+    public TicTacBoard move(Move move) {
+        history.add(new Representation(this));
+        TicTacBoard boardCopy = copy();
+        boardCopy.setCell(move.getCell(), move.getPlayer().getSymbol());
+        return boardCopy;
     }
+
     public void print(){
         for(int i = 0; i <3;i++){
             for(int j = 0; j < 3;j++){
@@ -94,11 +107,39 @@ public class TicTacBoard implements CellBoard {
         for(int i =0 ;i < 3;i++){
             System.arraycopy(board[i],0,ticTacBoard.board[i],0,3);
         }
+        ticTacBoard.history = history;
         return ticTacBoard;
     }
 
     @Override
     public String getSymbol(int i, int j){
         return board[i][j];
+    }
+}
+class History{
+    List<Representation> boards = new ArrayList<>();
+
+    public Representation getBoardAtMove(int moveIndex){
+        for(int i = 0; i< boards.size() - (moveIndex + 1);i++){
+            boards.remove(boards.size()-1);
+        }
+        return boards.get(moveIndex);
+    }
+    public void add(Representation representation){
+        boards.add(representation);
+    }
+    public Representation undo(){
+        if(boards.isEmpty()){
+            throw new IllegalStateException();
+        }
+        return boards.get(boards.size()-1);
+    }
+
+
+}
+class Representation {
+    String representation;
+    public Representation(Board board){
+        this.representation = board.toString();
     }
 }
