@@ -115,6 +115,17 @@ public class TicTacBoard implements CellBoard {
     public String getSymbol(int i, int j){
         return board[i][j];
     }
+
+    public enum Symbol{
+        X("X"),O("O");
+        String marker;
+        Symbol(String marker){
+            this.marker = marker;
+        }
+        public String getCode(){
+            return marker;
+        }
+    }
 }
 class History{
     List<Representation> boards = new ArrayList<>();
